@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="version" content="1.0.1">
+  <title>Tusk - SUI Token Launchpad</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.24.7/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #e0e0e0;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      overscroll-behavior: none;
+    }
+    .glow {
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+    }
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: #0f172a;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+    .hero {
+      margin-top: 80px;
+      min-height: calc(100vh - 80px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      background: linear-gradient(180deg, #1a1a2e 0%, #0f172a 100%);
+      animation: fadeIn 1s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .intro-text {
+      max-width: 900px;
+      margin-bottom: 2rem;
+    }
+    .intro-text h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .intro-text h2 {
+      font-size: 1.5rem;
+      color: #93c5fd;
+      margin-bottom: 1.25rem;
+    }
+    .intro-text p {
+      font-size: 1.125rem;
+      color: #d1d5db;
+      line-height: 1.7;
+    }
+    .cta-button {
+      background: #3b82f6;
+      color: #ffffff;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      margin: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .cta-button:hover {
+      background: #2563eb;
+      transform: scale(1.03);
+    }
+    .secondary-cta {
+      background: transparent;
+      border: 2px solid #3b82f6;
+      color: #3b82f6;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+      margin: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .secondary-cta:hover {
+      background: #3b82f6;
+      color: #ffffff;
+      transform: scale(1.03);
+    }
+    .social-icon {
+      font-size: 1rem;
+      width: 1rem;
+      height: 1rem;
+    }
+    .docs-container {
+      display: flex;
+      min-height: calc(100vh - 80px);
+      margin-top: 80px;
+      background: #1a1a2e;
+    }
+    .sidebar {
+      width: 240px;
+      background: #0f172a;
+      color: #e0e0e0;
+      padding: 1.5rem;
+      position: fixed;
+      height: calc(100vh - 80px);
+      overflow-y: auto;
+      border-right: 1px solid #333;
+      transition: transform 0.3s ease;
+      z-index: 30;
+    }
+    .sidebar h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      color: #e0e0e0;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar li {
+      margin-bottom: 0.75rem;
+    }
+    .sidebar a {
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+    .sidebar a:hover {
+      color: #60a5fa;
+    }
+    .docs-content {
+      margin-top: 50px;
+      padding-top: 150px;
+      margin-left: 240px;
+      padding: 2rem;
+      max-width: 900px;
+      background: #1a1a2e;
+      flex-grow: 1;
+      color: #e0e0e0;
+    }
+    .docs-content h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+    .docs-content h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      color: #ffffff;
+    }
+    .docs-content h3 {
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+    }
+    .docs-content p, .docs-content li {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: #e0e0e0;
+    }
+    .docs-content ul {
+      list-style-type: disc;
+      margin-left: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .docs-content a {
+      color: #60a5fa;
+      text-decoration: none;
+      transition: text-decoration 0.2s ease;
+    }
+    .docs-content a:hover {
+      text-decoration: underline;
+    }
+    .docs-top-bar {
+      position: fixed;
+      top: 80px;
+      left: 240px;
+      right: 0;
+      background: #0f172a;
+      padding: 0.75rem 2rem;
+      border-bottom: 1px solid #333;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .sidebar-toggle {
+      display: none;
+      background: #3b82f6;
+      color: #ffffff;
+      border: none;
+      padding: 0.5rem;
+      cursor: pointer;
+      position: fixed;
+      top: 90px;
+      left: 10px;
+      z-index: 40;
+      border-radius: 6px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sidebar-toggle img {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s ease;
+    }
+    .sidebar-toggle.active img {
+      transform: rotate(180deg);
+    }
+    .soon-nav {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      color: #6b7280;
+      cursor: not-allowed;
+      font-style: italic;
+    }
+    .soon-nav:hover::after {
+      content: 'Coming Soon';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1f2937;
+      color: #ffffff;
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      z-index: 10;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 18px;
+      cursor: pointer;
+    }
+    .hamburger span {
+      width: 100%;
+      height: 3px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+    .mobile-nav {
+      display: none;
+      position: absolute;
+      top: 80px;
+      left: 0;
+      right: 0;
+      background: #0f172a;
+      padding: 1rem;
+      flex-direction: column;
+      z-index: 999;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .mobile-nav.active {
+      display: flex;
+    }
+    .mobile-nav a, .mobile-nav button {
+      color: #e0e0e0;
+      padding: 0.75rem;
+      text-align: center;
+      font-size: 1rem;
+      transition: color 0.2s ease;
+    }
+    .soon-section {
+      min-height: calc(100vh - 80px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      color: #d1d5db;
+    }
+    .sidebar-toggle {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .header nav {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .sidebar {
+        width: 220px;
+        padding-top: 50px;
+        transform: translateX(-100%);
+      }
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      .docs-content {
+        margin-left: 0;
+        padding: 1.5rem;
+        margin-top: 60px;
+      }
+      .docs-top-bar {
+        left: 0;
+        padding: 0.75rem 1.5rem;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .sidebar-toggle {
+        display: flex;
+      }
+      .docs-content h1 {
+        font-size: 1.75rem;
+      }
+      .docs-content h2 {
+        font-size: 1.35rem;
+      }
+      .docs-content h3 {
+        font-size: 1.15rem;
+      }
+      .docs-content p, .docs-content li {
+        font-size: 0.95rem;
+      }
+      .hero {
+        margin-top: 80px;
+        padding: 2rem 1rem;
+      }
+      .intro-text h1 {
+        font-size: 2rem;
+      }
+      .intro-text h2 {
+        font-size: 1.25rem;
+      }
+      .intro-text p {
+        font-size: 1rem;
+      }
+      .cta-button, .secondary-cta {
+        padding: 0.65rem 1.75rem;
+        font-size: 0.95rem;
+      }
+      .soon-nav:hover::after {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.6rem;
+      }
+      .docs-content canvas {
+        max-width: 100%;
+        height: auto;
+      }
+      .soon-section {
+        padding: 1.5rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .header {
+        padding: 0.75rem;
+      }
+      .docs-content {
+        margin-top: 60px;
+        padding: 1rem;
+      }
+      .docs-top-bar {
+        padding: 0.5rem 1rem;
+      }
+      .hero {
+        padding: 1.5rem 0.75rem;
+      }
+      .intro-text h1 {
+        font-size: 1.75rem;
+      }
+      .intro-text h2 {
+        font-size: 1.15rem;
+      }
+      .intro-text p {
+        font-size: 0.9rem;
+      }
+      .cta-button, .secondary-cta {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+      }
+      .sidebar {
+        width: 200px;
+      }
+      .sidebar h2 {
+        font-size: 1.15rem;
+      }
+      .sidebar a {
+        font-size: 0.9rem;
+      }
+      .sidebar-toggle {
+        top: 85px;
+        left: 8px;
+        width: 32px;
+        height: 32px;
+      }
+      .sidebar-toggle img {
+        width: 18px;
+        height: 18px;
+      }
+      .soon-section {
+        padding: 1rem;
+      }
+    }
+    @media (max-width: 320px) {
+      .intro-text h1 {
+        font-size: 1.5rem;
+      }
+      .intro-text h2 {
+        font-size: 1rem;
+      }
+      .intro-text p {
+        font-size: 0.85rem;
+      }
+      .cta-button, .secondary-cta {
+        padding: 0.5rem 1.25rem;
+        font-size: 0.85rem;
+      }
+      .sidebar {
+        width: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const ErrorBoundary = ({ children }) => {
+      const [hasError, setHasError] = React.useState(false);
+      React.useEffect(() => {
+        const handleError = () => setHasError(true);
+        window.addEventListener('error', handleError);
+        return () => window.removeEventListener('error', handleError);
+      }, []);
+      if (hasError) {
+        return <div className="text-center p-4 text-red-400">Something went wrong. Please refresh the page.</div>;
+      }
+      return children;
+    };
+
+    const Header = ({ onHomeClick, onDocsClick, onSoonClick }) => {
+      const [isMobileNavOpen, setIsMobileNavOpen] = React.useState(false);
+
+      const toggleMobileNav = () => {
+        setIsMobileNavOpen(!isMobileNavOpen);
+      };
+
+      return (
+        <header className="header flex justify-between items-center p-4 md:p-6 bg-[#0f172a] shadow-lg">
+          <div className="flex items-center">
+            <img src="logo.png" alt="Tusk Logo" className="h-8 md:h-10 mr-3" />
+            <div className="text-2xl md:text-3xl font-bold text-white">
+              Tuskar<sup className="text-blue-400 text-xs md:text-sm"></sup>
+            </div>
+          </div>
+          <nav className="hidden md:flex space-x-4 lg:space-x-6">
+            <button onClick={onHomeClick} className="text-gray-300 hover:text-blue-400 transition font-semibold">
+              Home
+            </button>
+            <button onClick={() => onSoonClick('launchpad')} className="soon-nav">
+              Launchpad
+            </button>
+            <button onClick={() => onSoonClick('pools')} className="soon-nav">
+              Pools
+            </button>
+            <button onClick={() => onSoonClick('swap')} className="soon-nav">
+              Swap
+            </button>
+            <button onClick={() => onSoonClick('web-builder')} className="soon-nav">
+              Web Builder
+            </button>
+            <button onClick={onDocsClick} className="text-gray-300 hover:text-blue-400 transition">
+              Docs
+            </button>
+          </nav>
+          <div className="hamburger md:hidden" onClick={toggleMobileNav}>
+            <span className={isMobileNavOpen ? 'active' : ''}></span>
+            <span className={isMobileNavOpen ? 'active' : ''}></span>
+            <span className={isMobileNavOpen ? 'active' : ''}></span>
+          </div>
+          <div className={`mobile-nav ${isMobileNavOpen ? 'active' : ''}`}>
+            <button onClick={() => { onHomeClick(); toggleMobileNav(); }} className="hover:text-blue-400 transition font-semibold">
+              Home
+            </button>
+            <button onClick={() => { onSoonClick('launchpad'); toggleMobileNav(); }} className="soon-nav">
+              Launchpad
+            </button>
+            <button onClick={() => { onSoonClick('pools'); toggleMobileNav(); }} className="soon-nav">
+              Pools
+            </button>
+            <button onClick={() => { onSoonClick('swap'); toggleMobileNav(); }} className="soon-nav">
+              Swap
+            </button>
+            <button onClick={() => { onSoonClick('web-builder'); toggleMobileNav(); }} className="soon-nav">
+              Web Builder
+            </button>
+            <button onClick={() => { onDocsClick(); toggleMobileNav(); }} className="hover:text-blue-400 transition">
+              Docs
+            </button>
+          </div>
+          <button className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg glow transition text-sm md:text-base">
+            Connect Wallet
+          </button>
+        </header>
+      );
+    };
+
+    const Home = ({ onDocsClick }) => {
+      return (
+        <section className="hero">
+          <div className="intro-text">
+            <h1>Launch Tokens with TUSK on Sui</h1>
+            <h2>The First Token Launchpad in Walrus Protocol</h2>
+            <p>
+              TUSK is a decentralized token launchpad built on the Sui blockchain, enabling creators and entrepreneurs to deploy meme coins or utility tokens effortlessly. Powered by the $TUSK token and integrated with the Walrus Protocol for decentralized storage, TUSK offers secure, low-cost launches with fair pricing via bonding curves and instant liquidity through automatic DEX listings on platforms like Cetus and BlueMove. Join a community-driven ecosystem to govern, stake, and shape the future of blockchain innovation.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <button onClick={onDocsClick} className="cta-button glow">
+              Read Whitepaper
+            </button>
+            <button className="secondary-cta glow">
+              <i className="fa-brands fa-x-twitter social-icon"></i>
+              Follow on X
+            </button>
+            <button className="secondary-cta glow">
+              <i className="fa-brands fa-telegram social-icon"></i>
+              Join on Telegram
+            </button>
+          </div>
+        </section>
+      );
+    };
+
+    const Launchpad = () => {
+      return (
+        <section className="soon-section">
+          <div>
+            <h2 className="text-2xl font-bold text-white mb-4">Launchpad Coming Soon</h2>
+            <p>Effortlessly create tokens with TUSK’s Launchpad. Stay tuned for the launch!</p>
+          </div>
+        </section>
+      );
+    };
+
+    const SwapSection = () => {
+      return (
+        <section className="soon-section">
+          <div>
+            <h2 className="text-2xl font-bold text-white mb-4">Swap Coming Soon</h2>
+            <p>Swap tokens on TUSK soon. Stay tuned for updates!</p>
+          </div>
+        </section>
+      );
+    };
+
+    const PoolsSection = () => {
+      return (
+        <section className="soon-section">
+          <div>
+            <h2 className="text-2xl font-bold text-white mb-4">Pools Coming Soon</h2>
+            <p>Participate in bonding pools on TUSK soon. Stay tuned!</p>
+          </div>
+        </section>
+      );
+    };
+
+    const Whitepaper = ({ onHomeClick }) => {
+      const [sidebarOpen, setSidebarOpen] = React.useState(false);
+
+      const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen);
+      };
+
+      const handleOutsideClick = (e) => {
+        if (sidebarOpen) {
+          const sidebar = document.querySelector('.sidebar');
+          const toggleButton = document.querySelector('.sidebar-toggle');
+          if (sidebar && toggleButton && !sidebar.contains(e.target) && !toggleButton.contains(e.target)) {
+            setSidebarOpen(false);
+          }
+        }
+      };
+
+      React.useEffect(() => {
+        document.addEventListener('click', handleOutsideClick);
+        return () => document.removeEventListener('click', handleOutsideClick);
+      }, [sidebarOpen]);
+
+      return (
+        <div className="docs-container">
+          <button className={`sidebar-toggle ${sidebarOpen ? 'active' : ''}`} onClick={toggleSidebar}>
+            <img
+              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTUgM2g2djE4aC02Ii8+PHBhdGggZD0iTTEwIDE3bDUtNS01LTUiLz48L3N2Zz4="
+              alt="Toggle Sidebar"
+            />
+          </button>
+          <div className={`sidebar ${sidebarOpen ? 'active' : ''}`}>
+            <h2>TUSK Documentation</h2>
+            <ul>
+              <li><a href="#overview" onClick={() => setSidebarOpen(false)}>Overview</a></li>
+              <li><a href="#why-tusk" onClick={() => setSidebarOpen(false)}>Why TUSK?</a></li>
+              <li><a href="#token-utility" onClick={() => setSidebarOpen(false)}>$TUSK Utility</a></li>
+              <li><a href="#tokenomics" onClick={() => setSidebarOpen(false)}>Tokenomics</a></li>
+              <li><a href="#launchpad" onClick={() => setSidebarOpen(false)}>Launchpad</a></li>
+              <li><a href="#launch-requirements" onClick={() => setSidebarOpen(false)}>Launch Requirements</a></li>
+              <li><a href="#web-builder" onClick={() => setSidebarOpen(false)}>Web Builder</a></li>
+              <li><a href="#security" onClick={() => setSidebarOpen(false)}>Security & Compliance</a></li>
+            </ul>
+          </div>
+          <div className="docs-top-bar">
+            <span className="text-sm md:text-base">TUSK Documentation</span>
+          </div>
+          <div className="docs-content">
+            <h1>TUSK Whitepaper</h1>
+            <p className="text-gray-400 mb-12 text-sm md:text-base">Last updated: May 12, 2025</p>
+
+            <section id="overview">
+              <h2>Overview</h2>
+              <p>
+                TUSK is a decentralized token launchpad on the Sui blockchain, designed to simplify and democratize token creation. Hosted at <a href="https://tusk.wal.app">tusk.wal.app</a> and integrated with the Walrus Protocol for decentralized storage, TUSK enables creators, entrepreneurs, and communities to launch tokens without coding expertise. Powered by the $TUSK utility token, the platform leverages Sui’s high-throughput, low-latency architecture to offer secure, cost-efficient launches with fair pricing through bonding curves and immediate liquidity via automatic DEX listings on platforms like Cetus and BlueMove. TUSK fosters a community-driven ecosystem where users govern, stake, and shape the future of blockchain projects.
+              </p>
+            </section>
+
+            <section id="why-tusk">
+              <h2>Why TUSK?</h2>
+              <p>TUSK stands out as the premier token launchpad on Sui due to its unique features:</p>
+              <ul>
+                <li><strong>Rapid Deployment:</strong> Launch tokens in minutes using an intuitive interface.</li>
+                <li><strong>Fair Pricing:</strong> Bonding curves ensure transparent price discovery, mitigating volatility.</li>
+                <li><strong>Cost Efficiency:</strong> Sui’s low transaction fees reduce costs for creators and investors.</li>
+                <li><strong>Community Governance:</strong> $TUSK holders vote on platform upgrades and featured projects.</li>
+                <li><strong>Instant Liquidity:</strong> Automatic DEX listings enable trading from launch day.</li>
+                <li><strong>Decentralized Storage:</strong> Integration with Walrus Protocol ensures secure, accessible project data.</li>
+              </ul>
+            </section>
+
+            <section id="token-utility">
+              <h2>$TUSK Utility</h2>
+              <p>The $TUSK token is the backbone of the TUSK ecosystem, enabling key functionalities:</p>
+              <ul>
+                <li><strong>Transaction Fees:</strong> Pay gas fees for token launches, trades, and platform interactions using $TUSK.</li>
+                <li><strong>Governance:</strong> Stake $TUSK to vote on platform proposals, including featured launches and upgrades.</li>
+                <li><strong>Staking Rewards:</strong> Earn a share of platform revenue by staking $TUSK.</li>
+                <li><strong>Access:</strong> Use $TUSK to access advanced features, such as the upcoming web builder.</li>
+              </ul>
+            </section>
+
+            <section id="tokenomics">
+              <h2>Tokenomics</h2>
+              <p>
+                The tokenomics details for $TUSK are not yet available, as the token has not been launched. Comprehensive information regarding the total supply, allocation, vesting schedules, and other economic mechanisms will be disclosed closer to the official launch. Stay tuned for updates through our official channels.
+              </p>
+            </section>
+
+            <section id="launchpad">
+              <h2>TUSK Launchpad</h2>
+              <p>The TUSK Launchpad streamlines token creation with a secure, user-friendly process:</p>
+              <ul>
+                <li><strong>Configure:</strong> Define token name, symbol, supply, and bonding curve parameters.</li>
+                <li><strong>Deploy:</strong> Launch tokens with a single click using audited smart contracts.</li>
+                <li><strong>Bond:</strong> Users bond SUI to mint tokens, establishing fair market pricing.</li>
+                <li><strong>Trade:</strong> Tokens are automatically listed on DEXs for immediate trading.</li>
+                <li><strong>Promote:</strong> Community votes highlight top projects for greater visibility.</li>
+              </ul>
+            </section>
+
+            <section id="launch-requirements">
+              <h2>Launch Requirements</h2>
+              <p>Launching a token on TUSK is straightforward, with minimal requirements:</p>
+              <h3>Mandatory</h3>
+              <ul>
+                <li><strong>Token Name:</strong> Unique, 3–32 characters.</li>
+                <li><strong>Symbol:</strong> 2–8 characters (e.g., TUSK).</li>
+                <li><strong>Supply:</strong> Fixed, 1M–10B tokens.</li>
+                <li><strong>Bonding Curve:</strong> Set initial price and growth rate.</li>
+                <li><strong>Fee:</strong> Paid in $TUSK to cover gas and platform costs.</li>
+              </ul>
+              <h3>Optional</h3>
+              <ul>
+                <li><strong>Logo:</strong> PNG/JPEG, max 1MB.</li>
+                <li><strong>Description:</strong> Up to 500 characters.</li>
+                <li><strong>Social Links:</strong> X, Discord, or website URLs.</li>
+              </ul>
+              <p>TUSK’s pre-audited smart contracts eliminate the need for coding or technical expertise.</p>
+            </section>
+
+            <section id="web-builder">
+              <h2>Web Builder (Coming Soon)</h2>
+              <p>
+                TUSK’s web builder, integrated with the Sui blockchain and Walrus Protocol, will enable token creators to build professional websites effortlessly. This feature, payable in $TUSK, enhances project visibility and credibility.
+              </p>
+              <ul>
+                <li><strong>Customizable Templates:</strong> Create websites without coding using intuitive templates.</li>
+                <li><strong>Decentralized Hosting:</strong> Store websites on the Walrus Protocol for reliability and accessibility.</li>
+                <li><strong>Features:</strong> Showcase tokenomics, roadmaps, and community links.</li>
+                <li><strong>Integration:</strong> Link websites to TUSK token profiles for seamless discoverability.</li>
+              </ul>
+            </section>
+
+            <section id="security">
+              <h2>Security and Compliance</h2>
+              <p>TUSK prioritizes user safety and regulatory adherence:</p>
+              <ul>
+                <li><strong>Audited Contracts:</strong> Smart contracts audited by leading blockchain security firms.</li>
+                <li><strong>Secure Wallets:</strong> Integration with Sui-compatible wallets (e.g., Sui Wallet, Ethos).</li>
+                <li><strong>KYC/AML:</strong> Optional KYC for featured launches to meet regulatory standards.</li>
+                <li><strong>Anti-Bot Protection:</strong> Rate limits and CAPTCHAs prevent launch abuse.</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      );
+    };
+
+    const App = () => {
+      const [view, setView] = React.useState('home');
+
+      const routes = {
+        '/': 'home',
+        '/whitepaper': 'whitepaper',
+        '/launchpad': 'launchpad',
+        '/pools': 'pools',
+        '/swap': 'swap',
+        '/web-builder': 'web-builder'
+      };
+
+      React.useEffect(() => {
+        const path = window.location.pathname;
+        const initialView = routes[path] || 'home';
+        setView(initialView);
+      }, []);
+
+      React.useEffect(() => {
+        const handlePopstate = () => {
+          const path = window.location.pathname;
+          const newView = routes[path] || 'home';
+          setView(newView);
+        };
+        window.addEventListener('popstate', handlePopstate);
+        return () => window.removeEventListener('popstate', handlePopstate);
+      }, []);
+
+      const handleHomeClick = () => {
+        setView('home');
+        window.history.pushState({}, '', '/');
+      };
+
+      const handleDocsClick = () => {
+        setView('whitepaper');
+        window.history.pushState({}, '', '/whitepaper');
+      };
+
+      const handleSoonClick = (section) => {
+        setView(section);
+        window.history.pushState({}, '', `/${section}`);
+      };
+
+      return (
+        <ErrorBoundary>
+          <div>
+            <Header
+              onHomeClick={handleHomeClick}
+              onDocsClick={handleDocsClick}
+              onSoonClick={handleSoonClick}
+            />
+            {view === 'home' && <Home onDocsClick={handleDocsClick} />}
+            {view === 'whitepaper' && <Whitepaper onHomeClick={handleHomeClick} />}
+            {view === 'launchpad' && <Launchpad />}
+            {view === 'pools' && <PoolsSection />}
+            {view === 'swap' && <SwapSection />}
+            {view === 'web-builder' && (
+              <section className="soon-section">
+                <div>
+                  <h2 className="text-2xl font-bold text-white mb-4">Web Builder Coming Soon</h2>
+                  <p>Create professional project websites with TUSK’s Web Builder. Stay tuned!</p>
+                </div>
+              </section>
+            )}
+          </div>
+        </ErrorBoundary>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

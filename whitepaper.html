@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TUSK Whitepaper</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    body {
+      background-color: #ffffff;
+      color: #333333;
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+    .header-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    .chart-container {
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div className="container">
+    <header className="text-center py-10">
+      <h1 className="text-4xl font-bold text-gray-800">TUSK Whitepaper</h1>
+      <p className="text-gray-600 mt-2">Published on May 12, 2025</p>
+    </header>
+
+    <section className="section">
+      <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
+        <svg className="header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        Abstract
+      </h2>
+      <p className="text-gray-700 mt-4">
+        TUSK is a bonding curve-based token and launchpad ecosystem built on the Sui blockchain, integrated with the Walrus Protocol. It empowers meme coin creators, Web3 communities, and DeFi participants with fair token distribution, sustainable liquidity, and decentralized governance.
+      </p>
+    </section>
+
+    <section className="section">
+      <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
+        <svg className="header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        Introduction
+      </h2>
+      <p className="text-gray-700 mt-4">
+        Bonding curves link token supply and price dynamically. TUSK leverages this for a secure, transparent launchpad, avoiding traditional presales and centralized distributions. Hosted at <a href="http://tusk.wal.app" className="text-blue-600 hover:underline">tusk.wal.app</a>, TUSK democratizes token launches, ensuring liquidity and price discovery align with demand, built for simplicity, trust, and long-term value.
+      </p>
+    </section>
+
+    <section className="section">
+      <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
+        <svg className="header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+        </svg>
+        Vision and Mission
+      </h2>
+      <p className="text-gray-700 mt-4">
+        <strong>Vision:</strong> To be the premier bonding curve launchpad for next-generation meme coins and utility tokens on Sui.<br />
+        <strong>Mission:</strong> To deliver a seamless, transparent, and equitable token launch process using bonding curves for continuous liquidity and price integrity.
+      </p>
+    </section>
+
+    <section className="section">
+      <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
+        <svg className="header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-4-6v12"></path>
+        </svg>
+        Platform Architecture
+      </h2>
+      <h3 className="text-xl font-semibold text-gray-700 mt-4">Smart Contract Infrastructure</h3>
+      <p className="text-gray-700 mt-2">
+        TUSK uses Move smart contracts on Sui for secure, auditable bonding curve logic, native asset support, low fees, and rapid transaction finality.
+      </p>
+      <h3 className="text-xl font-semibold text-gray-700 mt-4">Key Modules</h3>
+      <ul className="list-disc pl-5 text-gray-700 mt-2">
+        <li><strong>BondingCurve.move:</strong> Manages minting and burning logic based on a predefined curve.</li>
+        <li><strong>TokenFactory.move:</strong> Issues and oversees creator tokens launched on TUSK.</li>
+        <li><strong>Treasury.move:</strong> Handles liquidity collection, allocating a portion to the Walrus Protocol reserve.</li>
+        <li><strong>Governance.move:</strong> Enables future DAO upgrades for community voting and participation.</li>
+      </ul>
+    </section>
+
+    <section className="section">
+      <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
+        <svg className="header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.657 0 3 .895 3 2s-1.343 2-3 2m0 0c-1.657 0-3 .895-3 2s1.343 2 3 2m-6 0V6m12 0v12"></path>
+        </svg>
+        Tokenomics
+      </h2>
+      <h3 className="text-xl font-semibold text-gray-700 mt-4">TUSK ($TUSK)</h3>
+      <p className="text-gray-700 mt-2">The platform's native utility token.</p>
+      <h3 className="text-xl font-semibold text-gray-700 mt-4">Supply</h3>
+      <p className="text-gray-700 mt-2">Total Supply: 1,000,000,000 TUSK<br />Initial Circulating Supply: 50,000,000 TUSK</p>
+      <h3 className="text-xl font-semibold text-gray-700 mt-4">Allocation</h3>
+      <div className="chart-container">
+        <canvas id="tokenAllocationChart"></canvas>
+      </div>
+      <h3 className="text-xl font-semibold text-gray-700 mt-4">Utilities</h3>
+      <ul className="list-disc pl-5 text-gray-700 mt-2">
+        <li>Paying gas fees on the platform.</li>
+        <li>Participating in governance.</li>
+        <li>Staking for rewards and voting on new launches.</li>
+      </ul>
+    </section>
+
+    <section className="section">
+      <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
+        <svg className="header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a2 2 0 012-2h2a2 2 0 012 2v5m-4 0h4"></path>
+        </svg>
+        How TUSK Launchpad Works
+      </h2>
+      <ul className="list-disc pl-5 text-gray-700 mt-4">
+        <li><strong>Creator Application:</strong> Token creators apply to launch on Tusk.</li>
+        <li><strong>Curve Configuration:</strong> Select bonding curve parameters (e.g., linear, exponential).</li>
+        <li><strong>Token Minting:</strong> Users bond SUI to mint new tokens.</li>
+        <li><strong>Liquidity Accumulation:</strong> A portion of bonded funds contributes to a liquidity pool.</li>
+        <li><strong>Listing Support:</strong> Automatic DEX listings (e.g., Cetus, BlueMove).</li>
+        <li><strong>Governance Listing:</strong> Community votes on featured launches.</li>
+      </ul>
+    </section>
+
+    <section className="section">
+      <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
+        <svg className="header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+        </svg>
+        Bonding Curve Models
+      </h2>
+      <ul className="list-disc pl-5 text-gray-700 mt-4">
+        <li><strong>Linear:</strong> Price increases at a fixed rate per token minted.</li>
+        <li><strong>Exponential:</strong> Price rises exponentially with supply.</li>
+        <li><strong>Sigmoid (Future):</strong> Planned for slower initial growth, accelerating mid-curve, then stabilizing.</li>
+      </ul>
+    </section>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const ctx = document.getElementById('tokenAllocationChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Bonding Curve Reserve (35%)', 'Community Incentives (20%)', 'Protocol Development (15%)', 'Team (vested) (10%)', 'Ecosystem Grants (10%)', 'Liquidity Bootstrapping Pool (10%)'],
+          datasets: [{
+            data: [35, 20, 15, 10, 10, 10],
+            backgroundColor: ['#4B5EAA', '#6D8299', '#8FA5B2', '#B1C7CC', '#D3E0E5', '#F0F4F8'],
+            borderColor: '#ffffff',
+            borderWidth: 2,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: '#333333',
+                font: { size: 14 }
+              }
+            },
+            title: {
+              display: true,
+              text: 'Token Allocation Breakdown',
+              color: '#333333',
+              font: { size: 18 }
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
